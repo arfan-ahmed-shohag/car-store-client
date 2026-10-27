@@ -1,4 +1,5 @@
 import { Banner } from "./components/Banner";
+import ShopByBrand from "./components/ShopByBrand";
 import HowItWorks from "./components/HowItWorks";
 import NewArrivals from "./components/NewArrivals";
 import OurPartners from "./components/OurPartners";
@@ -62,6 +63,7 @@ const Home = () => {
   return (
     <div className="home-page bg-background text-foreground">
       <Banner />
+      <ShopByBrand />
       <HowItWorks />
       <NewArrivals />
       <WhyChooseUs />

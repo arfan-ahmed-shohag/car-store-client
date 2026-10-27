@@ -14,8 +14,8 @@ const slides = [
   },
   {
     id: "drive-your-dream",
-    image: "/images/hero/engine-performance.jpg",
-    imageAlt: "An alloy wheel with automotive tools in the background",
+    image: "/images/hero/drive-your-dream.jpg",
+    imageAlt: "A black sports car overlooking mountains at sunset",
     subtitle: "A car for every journey",
     title: "Drive Your Dream",
     description: "From daily commutes to weekend getaways.",
