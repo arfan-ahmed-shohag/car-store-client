@@ -5,9 +5,9 @@ interface Brand {
 }
 
 const OurPartners = ({ brands }: { brands: Brand[] }) => (
-  <section className="overflow-hidden border-t border-border bg-muted/30 py-16 lg:py-20">
-    <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
-      <div className="mb-10 text-center">
+  <section className="home-section overflow-hidden border-t border-border bg-muted/30">
+    <div className="home-container">
+      <div className="home-section__heading text-center">
         <p className="brand-eyebrow">The brands you love</p>
         <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">Our Partners</h2>
         <p className="mt-3 text-muted-foreground">Trusted automotive brands around the world.</p>

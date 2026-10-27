@@ -1,18 +1,16 @@
-import { useGetNewArrivalsQuery } from "../../../redux/fetchers/cars/carApi";
-import Loader from "../../shared/Loader";
-import ReUsableHomePageCarsSection from "./ReUsableHomePageCarsSection";
+import CarCollectionSection from "./CarCollectionSection";
+import { demoNewArrivals, type ArrivalCar } from "../data/newArrivals";
 
-const NewArrivals = () => {
-  const { data, isLoading } = useGetNewArrivalsQuery(undefined);
-
-  if (isLoading) return <Loader />;
-
-  const products = data?.data || [];
-
-  const newArrivals = products?.slice(0, 8) || [];
-
+const NewArrivals = ({ cars = demoNewArrivals }: { cars?: readonly ArrivalCar[] }) => {
   return (
-    <ReUsableHomePageCarsSection carData={newArrivals} header="New Arrivals" />
+    <CarCollectionSection
+      id="new-arrivals"
+      title="New arrivals"
+      description="Find your next drive in our latest collection."
+      cars={cars}
+      badgeLabel="New"
+      previewLabel="New arrival"
+    />
   );
 };
 

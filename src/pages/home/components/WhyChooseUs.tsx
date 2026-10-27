@@ -69,10 +69,10 @@ const FeatureCard: React.FC<{ feature: Feature }> = ({ feature }) => {
 
 export default function WhyChooseUs(): React.ReactElement {
   return (
-    <section className="border-y border-border bg-muted/30 py-16 lg:py-20">
-      <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
+    <section className="home-section border-y border-border bg-muted/30">
+      <div className="home-container">
         {/* Section Header */}
-        <div className="mb-10 text-center">
+        <div className="home-section__heading text-center">
           <p className="brand-eyebrow">The AutoSphere difference</p>
           <h2 className="mb-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
             Why Choose AutoSphere?

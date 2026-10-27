@@ -7,22 +7,13 @@
 }
 
 .shop-by-brand {
-  padding-block: 80px 50px;
   background: #fff;
   color: #000;
   font-family: "AutoSphere Jost", sans-serif;
   font-weight: 500;
 }
 
-.shop-by-brand__container {
-  width: 100%;
-  max-width: 1400px;
-  margin-inline: auto;
-  padding-inline: 20px;
-}
-
 .shop-by-brand__title {
-  margin: 0 0 48px;
   color: inherit;
   font-size: 40px;
   font-weight: 500;
@@ -142,8 +133,10 @@
 
 .shop-by-brand__pagination {
   display: flex;
+  height: 8px;
+  align-items: center;
   justify-content: center;
-  margin-top: 32px;
+  margin-top: var(--home-content-gap, 32px);
 }
 
 .shop-by-brand__dot {
@@ -213,8 +206,7 @@
 }
 
 @media (max-width: 576px) {
-  .shop-by-brand { padding-block: 56px 36px; }
-  .shop-by-brand__title { margin-bottom: 32px; font-size: 30px; line-height: 38px; }
+  .shop-by-brand__title { font-size: 30px; line-height: 38px; }
   .shop-by-brand__viewport { --brands-per-view: 1; }
 }
 

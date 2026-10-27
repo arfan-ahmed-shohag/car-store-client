@@ -5,9 +5,9 @@ import type { Cars } from "../../products/Products";
 import { Button } from "../../../components/ui/button";
 
 const ReUsableHomePageCarsSection = ({ carData, header }: { carData: Cars[]; header: string }) => (
-  <section className="py-16 lg:py-20">
-    <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
-      <div className="mb-10 text-center">
+  <section className="home-section">
+    <div className="home-container">
+      <div className="home-section__heading text-center">
         <p className="brand-eyebrow">Explore the collection</p>
         <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">{header}</h2>
       </div>
@@ -20,7 +20,7 @@ const ReUsableHomePageCarsSection = ({ carData, header }: { carData: Cars[]; hea
           Cars will appear here as they become available.
         </p>
       )}
-      <div className="mt-9 flex justify-center">
+      <div className="home-section__footer flex justify-center">
         <Button asChild size="lg" className="bg-brand text-white hover:bg-brand-hover focus-visible:ring-brand">
           <Link to="/products">View all cars <ArrowRight className="h-4 w-4" /></Link>
         </Button>

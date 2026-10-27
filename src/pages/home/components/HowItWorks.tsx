@@ -27,9 +27,9 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="border-b border-border bg-muted/30 py-16 lg:py-20">
-      <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
-        <div className="mb-10 text-center">
+    <section className="home-section border-b border-border bg-muted/30">
+      <div className="home-container">
+        <div className="home-section__heading text-center">
           <p className="brand-eyebrow">Our process</p>
           <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">How It Works</h2>
           <p className="mt-3 text-muted-foreground">A seamless way to buy your next car.</p>
@@ -50,7 +50,7 @@ export default function HowItWorks() {
           ))}
         </div>
 
-        <div className="mt-10 flex flex-col justify-between gap-6 rounded-xl border-l-4 border-brand bg-brand-ink p-7 sm:flex-row sm:items-center sm:p-8">
+        <div className="home-section__footer flex flex-col justify-between gap-6 rounded-xl border-l-4 border-brand bg-brand-ink p-7 sm:flex-row sm:items-center sm:p-8">
           <div>
             <h3 className="text-xl font-semibold text-white sm:text-2xl">Ready to find your perfect car?</h3>
             <p className="mt-2 text-sm leading-relaxed text-zinc-400">Browse our collection and find a car that fits your lifestyle.</p>

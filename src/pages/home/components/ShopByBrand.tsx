@@ -71,9 +71,9 @@ export default function ShopByBrand({ brands = staticBrands }: { brands?: ShopBr
   };
 
   return (
-    <section className="shop-by-brand" aria-labelledby="shop-by-brand-title" onKeyDown={handleKeyDown}>
-      <div className="shop-by-brand__container">
-        <h2 id="shop-by-brand-title" className="shop-by-brand__title">Shop by brand</h2>
+    <section className="home-section shop-by-brand" aria-labelledby="shop-by-brand-title" onKeyDown={handleKeyDown}>
+      <div className="home-container shop-by-brand__container">
+        <h2 id="shop-by-brand-title" className="home-section__heading shop-by-brand__title">Shop by brand</h2>
 
         <div className="shop-by-brand__slider">
           <div

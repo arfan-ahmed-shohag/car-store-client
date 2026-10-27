@@ -1,0 +1,85 @@
+.promotional-offers {
+  background: #fff;
+  font-family: "AutoSphere Jost", sans-serif;
+}
+
+.promotional-offers__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.promotional-offers__grid > li > article { height: 100%; }
+
+.promo-offer {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  aspect-ratio: 3 / 2;
+  align-items: flex-end;
+  justify-content: flex-start;
+  overflow: hidden;
+  border-radius: 4px;
+  padding: 32px 40px;
+  background: #172124;
+  color: #fff;
+}
+
+.promo-offer:focus-visible { outline: 2px solid #f57c1f; outline-offset: 5px; }
+.promo-offer__image,
+.promo-offer__shade { position: absolute; z-index: -1; inset: 0; width: 100%; height: 100%; }
+.promo-offer__image { object-fit: cover; object-position: center; }
+.promo-offer__shade { background: linear-gradient(0deg, rgb(7 14 17 / 90%), rgb(7 14 17 / 40%) 55%, rgb(7 14 17 / 15%)); }
+.promo-offer__copy { width: 100%; max-width: 420px; text-align: left; overflow-wrap: anywhere; }
+.promo-offer__eyebrow { margin: 0 0 7px; color: #f57c1f; font-size: 18px; font-weight: 500; line-height: 1.35; }
+.promo-offer__title { min-height: 2.4em; margin: 0; font-size: 28px; font-weight: 500; line-height: 1.2; white-space: pre-line; }
+.promo-offer__description { min-height: 3em; margin: 11px 0 0; color: rgb(255 255 255 / 90%); font-size: 15px; line-height: 1.5; }
+.promo-offer__button {
+  display: inline-flex;
+  min-width: 134px;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 20px;
+  border-radius: 0;
+  padding: 10px 23px;
+  background: #fff;
+  color: #111;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background-color 180ms, color 180ms;
+}
+.promo-offer__button svg { width: 14px; height: 14px; }
+.promo-offer__button:hover { background: #f57c1f; color: #fff; }
+
+.dark .promotional-offers { background: #141414; }
+
+@media (max-width: 1100px) {
+  .promo-offer { min-height: 340px; padding: 28px; }
+  .promo-offer__title { font-size: 25px; }
+  .promo-offer__copy { max-width: 100%; }
+}
+
+@media (max-width: 767px) {
+  .promotional-offers__grid { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .promo-offer { min-height: 320px; }
+}
+
+@media (max-width: 374px) {
+  .promo-offer { padding: 24px; }
+  .promo-offer__eyebrow { font-size: 16px; }
+  .promo-offer__title { font-size: 23px; }
+  .promo-offer__description { font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) { .promo-offer__button { transition: none; } }
