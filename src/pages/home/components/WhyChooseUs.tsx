@@ -51,16 +51,16 @@ const FeatureCard: React.FC<{ feature: Feature }> = ({ feature }) => {
   const Icon = feature.icon;
 
   return (
-    <div className="group h-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md dark:border-gray-700 dark:bg-gray-900">
-      <div className="mb-4 inline-flex rounded-lg bg-blue-50 p-3 dark:bg-blue-950">
-        <Icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+    <div className="group h-full rounded-xl border border-border bg-card p-6 transition-colors hover:border-brand/60">
+      <div className="mb-4 inline-flex rounded-lg bg-brand-subtle p-3">
+        <Icon className="h-6 w-6 text-brand-strong" />
       </div>
 
-      <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+      <h3 className="mb-2 text-lg font-semibold text-card-foreground">
         {feature.title}
       </h3>
 
-      <p className="text-sm text-gray-600 dark:text-gray-400">
+      <p className="text-sm leading-relaxed text-muted-foreground">
         {feature.description}
       </p>
     </div>
@@ -69,14 +69,15 @@ const FeatureCard: React.FC<{ feature: Feature }> = ({ feature }) => {
 
 export default function WhyChooseUs(): React.ReactElement {
   return (
-    <section className="md:py-20 lg:py-24">
-      <div className="px-4 sm:px-6 lg:px-8 2xl:px-0">
+    <section className="border-y border-border bg-muted/30 py-16 lg:py-20">
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         {/* Section Header */}
-        <div className="mb-12 text-center md:mb-16">
-          <h2 className="mb-3 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
+        <div className="mb-10 text-center">
+          <p className="brand-eyebrow">The AutoSphere difference</p>
+          <h2 className="mb-3 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
             Why Choose AutoSphere?
           </h2>
-          <p className="text-base text-gray-600 dark:text-gray-400 md:text-lg">
+          <p className="text-muted-foreground">
             Experience a trusted way to buy your next car.
           </p>
         </div>

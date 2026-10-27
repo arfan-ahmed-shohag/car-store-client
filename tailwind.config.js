@@ -13,6 +13,13 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+            brand: {
+                DEFAULT: '#F57C1F',
+                hover: '#DF6A12',
+                ink: '#141414',
+                strong: 'hsl(var(--brand-strong))',
+                subtle: 'hsl(var(--brand-subtle))'
+            },
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

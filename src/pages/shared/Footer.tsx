@@ -1,53 +1,33 @@
+import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
-import logo2 from "/logo2.png";
+import BrandLogo from "./BrandLogo";
 
-const Footer = () => {
-  return (
-    <footer className="rounded-lg shadow-sm bg-gray-900 mt-4 border-2 border-gray-300">
-      <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-        <div className="sm:flex sm:items-center sm:justify-between">
-          <Link to="/"
-            className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
-          >
-          <img src={logo2} className="h-16" alt="Flowbite Logo" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-              AutoSphere
-            </span>
+const Footer = () => (
+  <footer className="border-t border-brand/25 bg-brand-ink text-zinc-400">
+    <div className="mx-auto max-w-[1440px] px-5 py-12 sm:px-8">
+      <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-center">
+        <div>
+          <Link to="/" aria-label="AutoSphere home" className="inline-block rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
+            <BrandLogo />
           </Link>
-          <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-400 sm:mb-0">
-            <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
-                About
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
-                Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
-                Licensing
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Contact
-              </a>
-            </li>
-          </ul>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed">
+            Explore our collection. Find your next drive.
+          </p>
         </div>
-        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-        <span className="block text-sm text-gray-400 sm:text-center">
-          © 2025{" "}
-          <a href="https://flowbite.com/" className="hover:underline">
-            AutoSphere
-          </a>
-          . All Rights Reserved.
-        </span>
+        <nav aria-label="Footer navigation" className="flex flex-wrap gap-6 text-sm font-medium">
+          <Link to="/" className="transition-colors hover:text-brand">Home</Link>
+          <Link to="/products" className="transition-colors hover:text-brand">Products</Link>
+          <Link to="/contact" className="inline-flex items-center gap-1 transition-colors hover:text-brand">
+            Contact <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </nav>
       </div>
-    </footer>
-  );
-};
+      <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
+        <p>&copy; {new Date().getFullYear()} AutoSphere. All rights reserved.</p>
+        <p className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden="true" /> Your journey starts here.</p>
+      </div>
+    </div>
+  </footer>
+);
 
 export default Footer;

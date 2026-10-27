@@ -16,12 +16,7 @@ const PopularCars = () => {
   const popularCars = products?.map((p: {_id: string, totalQuantity: number, carDetails: Cars})=>p?.carDetails)
   const popularCarsData = popularCars?.slice(0, 8) || [];
 
-  return (
-    <>{
-      popularCars?.length > 0 ? <ReUsableHomePageCarsSection carData={popularCarsData} header="Popular Car" /> : <p>No product found</p>
-    }</>
-    
-  );
+  return <ReUsableHomePageCarsSection carData={popularCarsData} header="Popular Cars" />;
 };
 
 export default PopularCars;

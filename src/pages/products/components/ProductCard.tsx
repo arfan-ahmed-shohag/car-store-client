@@ -22,15 +22,13 @@ const ProductCard = ({ product }: Car) => {
   }
 
   return (
-    <Link to={`/view-details/${product?._id}`} className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800 group">
-      <div className="h-40 w-full overflow-hidden rounded">
-        <Link to={`/view-details/${product?._id}`}>
+    <Link to={`/view-details/${product?._id}`} className="group block h-full rounded-xl border border-border bg-card p-4 text-card-foreground shadow-sm transition-colors hover:border-brand/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
+      <div className="h-40 w-full overflow-hidden rounded-lg bg-muted">
           <img
-            className="mx-auto w-full rounded-sm h-full shadow-md group-hover:scale-110 transition-transform duration-1000"
+            className="mx-auto h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
             src={product?.images[0]}
             alt=""
           />
-        </Link>
       </div>
 
       <div className="pt-6">
@@ -41,18 +39,16 @@ const ProductCard = ({ product }: Car) => {
                     size={24}
                     isHalf={true}
                     edit={false}
-                    activeColor="#ffd700"
+                    activeColor="#F57C1F"
                   />
-                  <p className="text-xs">({averageRatting.toFixed(1)})</p>
+                  <p className="text-xs text-muted-foreground">({averageRatting.toFixed(1)})</p>
         </div>
-        <Link to={`/view-details/${product?._id}`}
-          className="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
-        >
+        <h3 className="text-lg font-semibold leading-tight transition-colors group-hover:text-brand-strong">
           {product?.name}
-        </Link>
+        </h3>
 
         <div className="mt-4 flex items-center justify-between gap-2">
-          <p className="text-lg font-medium leading-tight text-red-600 dark:text-red-600">
+          <p className="text-lg font-semibold leading-tight text-brand-strong">
             {product?.price.toLocaleString()} Tk
           </p>
         </div>

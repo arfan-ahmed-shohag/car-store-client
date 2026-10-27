@@ -4,6 +4,8 @@
 @tailwind utilities;
 @layer base {
   :root {
+    --brand-strong: 25 100% 34%;
+    --brand-subtle: 27 100% 96%;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -39,6 +41,8 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%}
   .dark {
+    --brand-strong: 26 91% 54%;
+    --brand-subtle: 26 30% 13%;
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -79,5 +83,53 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .home-page {
+    --background: 30 20% 98%;
+    --foreground: 0 0% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+    --muted: 30 10% 94%;
+    --muted-foreground: 0 0% 40%;
+    --border: 30 8% 88%;
+    --ring: 26 91% 54%;
+  }
+
+  .dark .home-page {
+    --background: 0 0% 8%;
+    --foreground: 30 20% 97%;
+    --card: 0 0% 11%;
+    --card-foreground: 30 20% 97%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 65%;
+    --border: 0 0% 21%;
+  }
+
+  .brand-eyebrow {
+    @apply mb-3 text-xs font-bold uppercase tracking-[0.2em] text-brand-strong;
+  }
+
+  .brand-marquee {
+    animation: brand-scroll 40s linear infinite;
+  }
+
+  .brand-marquee:hover,
+  .brand-marquee:focus-within {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes brand-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-marquee {
+    animation: none;
   }
 }

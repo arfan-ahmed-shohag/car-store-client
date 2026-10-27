@@ -1,17 +1,20 @@
 import { Link, NavLink } from "react-router";
-import { cn } from "../../lib/utils";
 import { useState } from "react";
-import { ThemeToggle } from "../component/themeToggle";
-import logo2 from "/logo2.png";
-import { Button } from "../../components/ui/button";
+import { Menu, X } from "lucide-react";
 import { useSelector } from "react-redux";
-import {
-  currentToken,
-  logOut,
-  user,
-} from "../../redux/fetchers/auth/authSlice";
-import { useAppDispatch } from "../../redux/hooks";
 import { toast } from "react-toastify";
+import { cn } from "../../lib/utils";
+import { Button } from "../../components/ui/button";
+import { currentToken, logOut, user } from "../../redux/fetchers/auth/authSlice";
+import { useAppDispatch } from "../../redux/hooks";
+import { ThemeToggle } from "../component/themeToggle";
+import BrandLogo from "./BrandLogo";
+
+const menuItems = [
+  { label: "Home", path: "/" },
+  { label: "Products", path: "/products" },
+  { label: "Contact", path: "/contact" },
+];
 
 const NavBar = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -21,115 +24,70 @@ const NavBar = () => {
 
   const handleLogout = () => {
     dispatch(logOut());
+    setIsVisible(false);
     toast.success("Logout Successfully!");
   };
 
-  const handleToggle = () => {
-    setIsVisible(!isVisible);
-  };
+  const linkClassName = ({ isActive }: { isActive: boolean }) => cn(
+    "block rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:px-0",
+    isActive
+      ? "bg-brand/10 text-brand-strong md:bg-transparent"
+      : "text-zinc-600 hover:bg-zinc-100 hover:text-brand-strong dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-brand md:hover:bg-transparent md:dark:hover:bg-transparent",
+  );
 
-  const menuItems = [
-    {
-      id: 1,
-      label: "Home",
-      path: "/",
-    },
-    {
-      id: 2,
-      label: "Products",
-      path: "/products",
-    },
-    {
-      id: 3,
-      label: "Contact",
-      path: "/contact",
-    },
-  ];
   return (
-    <nav className="bg-black max-w-[1440px] fixed w-full z-50 border-gray-200">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-2">
-        <Link
-          to="/"
-          className="flex items-center space-x-3 rtl:space-x-reverse"
-        >
-          <img src={logo2} className="h-16" alt="Flowbite Logo" />
-          <span className="self-center text-2xl text-white font-semibold whitespace-nowrap dark:text-white">
-            AutoSphere
-          </span>
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-brand/25 bg-white text-zinc-900 shadow-lg shadow-black/5 transition-colors duration-200 dark:bg-brand-ink dark:text-zinc-100">
+      <div className="relative mx-auto flex h-20 max-w-[1440px] items-center justify-between gap-2 px-5 sm:gap-3 sm:px-8">
+        <Link to="/" aria-label="AutoSphere home" className="shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand" onClick={() => setIsVisible(false)}>
+          <BrandLogo themeAware />
         </Link>
-        <button
-          data-collapse-toggle="navbar-default"
-          type="button"
-          onClick={handleToggle}
-          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-200 rounded-lg md:hidden hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-default"
-          aria-expanded="false"
+        <nav
+          id="main-navigation"
+          aria-label="Main navigation"
+          className={cn(
+            "absolute inset-x-0 top-20 border-b border-zinc-200 bg-white p-5 shadow-lg dark:border-white/10 dark:bg-brand-ink md:static md:block md:border-0 md:p-0 md:shadow-none",
+            isVisible ? "block" : "hidden",
+          )}
         >
-          <span className="sr-only">Open main menu</span>
-          <svg
-            className="w-5 h-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M1 1h15M1 7h15M1 13h15"
-            />
-          </svg>
-        </button>
-        <div
-          className={cn("hidden w-full md:block md:w-auto", {
-            block: isVisible == true,
-          })}
-          id="navbar-default"
-        >
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 space-y-2 md:space-y-0 border bg-gray-100 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
-            {menuItems.map((menuItem) => (
-              <li key={menuItem.id}>
-                <NavLink
-                  to={menuItem.path}
-                  className={({ isActive }) => isActive ? "block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-[#EEFF25] md:p-0 dark:text-white md:dark:text-[#EEFF25]" : "block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-white md:p-0 dark:text-white md:dark:text-white"
-                  }
-                  aria-current="page"
-                >
-                  {menuItem.label}
+          <ul className="flex flex-col gap-2 md:flex-row md:items-center md:gap-6 lg:gap-8">
+            {menuItems.map((item) => (
+              <li key={item.path}>
+                <NavLink to={item.path} end={item.path === "/"} className={linkClassName} onClick={() => setIsVisible(false)}>
+                  {item.label}
                 </NavLink>
               </li>
             ))}
             {userToken && (
               <li>
-                <Link
-                  to={`/${userInfo?.role}/dashboard`}
-                  className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-white md:p-0 dark:text-white md:dark:text-white"
-                  aria-current="page"
-                >
+                <NavLink to={`/${userInfo?.role}/dashboard`} className={linkClassName} onClick={() => setIsVisible(false)}>
                   Dashboard
-                </Link>
+                </NavLink>
               </li>
             )}
-            {!userToken ? (
-              <li>
-                <Link to="/login">
-                  <Button className="bg-white text-black hover:bg-gray-200">Login</Button>
-                </Link>
-              </li>
-            ) : (
-              <li>
-                <Button className="bg-white text-black hover:bg-gray-200" onClick={handleLogout}>LogOut</Button>
-              </li>
-            )}
-            <li>
-              <ThemeToggle />
-            </li>
           </ul>
+        </nav>
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <ThemeToggle className="border-zinc-200 bg-zinc-50 text-zinc-700 hover:bg-zinc-100 hover:text-brand-strong dark:border-white/20 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:hover:text-brand" />
+          {userToken ? (
+            <Button size="sm" className="bg-brand text-white hover:bg-brand-hover focus-visible:ring-brand" onClick={handleLogout}>Log out</Button>
+          ) : (
+            <Button asChild size="sm" className="bg-brand text-white hover:bg-brand-hover focus-visible:ring-brand">
+              <Link to="/login">Login</Link>
+            </Button>
+          )}
+          <button
+            type="button"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-zinc-700 hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand dark:text-zinc-200 dark:hover:bg-white/10 md:hidden"
+            onClick={() => setIsVisible((visible) => !visible)}
+            aria-controls="main-navigation"
+            aria-expanded={isVisible}
+            aria-label={isVisible ? "Close main menu" : "Open main menu"}
+          >
+            {isVisible ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
       </div>
-    </nav>
+    </header>
   );
 };
 

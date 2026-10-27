@@ -60,7 +60,7 @@ const brands = [
 
 const Home = () => {
   return (
-    <div>
+    <div className="home-page bg-background text-foreground">
       <Banner />
       <HowItWorks />
       <NewArrivals />
