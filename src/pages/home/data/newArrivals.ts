@@ -7,6 +7,8 @@ export interface ArrivalVariant {
 
 export interface ArrivalCar {
   id: string;
+  // Existing API record used for details while the home collections stay static.
+  detailsId?: string;
   name: string;
   price: number;
   previousPrice?: number;
@@ -21,6 +23,7 @@ export interface ArrivalCar {
 export const demoNewArrivals: readonly ArrivalCar[] = [
   {
     id: "camry-hybrid",
+    detailsId: "691d4ebb76f1554f561fd145",
     name: "Toyota Camry Hybrid",
     price: 48500,
     previousPrice: 51500,
@@ -30,6 +33,7 @@ export const demoNewArrivals: readonly ArrivalCar[] = [
   },
   {
     id: "bmw-x5",
+    detailsId: "691d4fc976f1554f561fd160",
     name: "BMW X5",
     price: 125000,
     previousPrice: 132000,
@@ -39,6 +43,7 @@ export const demoNewArrivals: readonly ArrivalCar[] = [
   },
   {
     id: "tesla-model-s",
+    detailsId: "691cdcd5c437369ed7013065",
     name: "Tesla Model S",
     price: 98000,
     previousPrice: 104000,
@@ -52,6 +57,7 @@ export const demoNewArrivals: readonly ArrivalCar[] = [
   },
   {
     id: "honda-civic",
+    detailsId: "691cd6498d81fe3bd5568504",
     name: "Honda Civic Turbo",
     price: 36500,
     previousPrice: 39000,
@@ -61,6 +67,7 @@ export const demoNewArrivals: readonly ArrivalCar[] = [
   },
   {
     id: "ford-mustang",
+    detailsId: "691ce2f5984cf0036985fca8",
     name: "Ford Mustang GT",
     price: 89000,
     previousPrice: 94000,
@@ -70,6 +77,7 @@ export const demoNewArrivals: readonly ArrivalCar[] = [
   },
   {
     id: "audi-a4",
+    detailsId: "691d50c176f1554f561fd165",
     name: "Audi A4",
     price: 62000,
     previousPrice: 66000,
@@ -79,6 +87,7 @@ export const demoNewArrivals: readonly ArrivalCar[] = [
   },
   {
     id: "mazda-cx5",
+    detailsId: "691d5fd976f1554f561fd1d6",
     name: "Mazda CX-5",
     price: 46000,
     previousPrice: 49000,
@@ -88,6 +97,7 @@ export const demoNewArrivals: readonly ArrivalCar[] = [
   },
   {
     id: "hyundai-sonata",
+    detailsId: "691d5d3776f1554f561fd1b0",
     name: "Hyundai Sonata",
     price: 39500,
     previousPrice: 42500,

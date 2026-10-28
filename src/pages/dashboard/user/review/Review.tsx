@@ -61,10 +61,10 @@ const Review = ({ id }: { id: string }) => {
     navigate,
   ]);
   return (
-    <div className="p-4 mx-auto bg-gray-200 dark:bg-gray-800 rounded-lg mt-4 mb-10 shadow-md w-full sm:p-6">
+    <div className="car-review-form">
       <div>
-        <form className="space-y-4" onSubmit={handleReview}>
-          <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
+        <form className="car-review-form__fields" onSubmit={handleReview}>
+          <h2>
             Write a review
           </h2>
           <ReactStars
@@ -73,20 +73,21 @@ const Review = ({ id }: { id: string }) => {
             value={ratting}
             size={24}
             key={ratting} 
-            activeColor="#ffd700"
+            activeColor="#f57c1f"
           />
+          <label className="sr-only" htmlFor="review">Your review</label>
           <textarea
             id="review"
             name="review"
             rows={4}
             required
-            className="block w-full p-3 text-sm text-gray-900 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400"
+            className="car-review-form__input"
             placeholder="Write your review"
           ></textarea>
-          <div className="text-right py-4">
+          <div>
             <Button
               type="submit"
-              className="focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-400 font-semibold rounded-md text-sm px-5 py-3"
+              className="car-review-form__submit"
             >
               Submit Review
             </Button>

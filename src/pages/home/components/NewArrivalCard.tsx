@@ -22,6 +22,7 @@ export default function NewArrivalCard({ car, badgeLabel = "New", previewLabel =
   const variant = car.variants[variantIndex] ?? car.variants[0];
   const imageIndex = hovered && variant.images.length > 1 ? 1 : 0;
   const hasColors = car.variants.length > 1;
+  const detailsHref = `/view-details/${car.detailsId ?? car.id}`;
 
   const shoppingItem: ShoppingItem = {
     productId: car.id,
@@ -58,33 +59,34 @@ export default function NewArrivalCard({ car, badgeLabel = "New", previewLabel =
 
   return (
     <Dialog.Root open={previewOpen} onOpenChange={setPreviewOpen}>
-      <article className="arrival-card" data-car-id={car.id}>
+      <article
+        className="arrival-card"
+        data-car-id={car.id}
+        onPointerEnter={(event) => { if (event.pointerType !== "touch") setHovered(true); }}
+        onPointerLeave={() => setHovered(false)}
+      >
         <div
           className="arrival-card__media"
           data-has-colors={hasColors}
-          onPointerEnter={(event) => { if (event.pointerType !== "touch") setHovered(true); }}
-          onPointerLeave={() => setHovered(false)}
         >
-          <Dialog.Trigger asChild>
-            <button type="button" className="arrival-card__image-trigger" aria-label={`Preview ${car.name}`} onClick={(event) => openDialog("preview", imageIndex, event.currentTarget)}>
-              {car.variants.flatMap((colorVariant) => colorVariant.images.map((image, index) => {
-                const active = colorVariant.id === variant.id && index === imageIndex;
-                return (
-                  <img
-                    key={`${colorVariant.id}-${index}`}
-                    src={image}
-                    alt={active ? `${car.name}${hasColors ? ` in ${variant.name}` : ""}, ${index === 0 ? "exterior" : "alternate"} view` : ""}
-                    aria-hidden={!active}
-                    data-active={active}
-                    className="arrival-card__image"
-                    loading="lazy"
-                    decoding="async"
-                    draggable={false}
-                  />
-                );
-              }))}
-            </button>
-          </Dialog.Trigger>
+          <div className="arrival-card__image-stack">
+            {car.variants.flatMap((colorVariant) => colorVariant.images.map((image, index) => {
+              const active = colorVariant.id === variant.id && index === imageIndex;
+              return (
+                <img
+                  key={`${colorVariant.id}-${index}`}
+                  src={image}
+                  alt={active ? `${car.name}${hasColors ? ` in ${variant.name}` : ""}, ${index === 0 ? "exterior" : "alternate"} view` : ""}
+                  aria-hidden={!active}
+                  data-active={active}
+                  className="arrival-card__image"
+                  loading="lazy"
+                  decoding="async"
+                  draggable={false}
+                />
+              );
+            }))}
+          </div>
 
           <span className="arrival-card__ribbon">{badgeLabel}</span>
           {variant.images.length > 1 && (
@@ -144,9 +146,7 @@ export default function NewArrivalCard({ car, badgeLabel = "New", previewLabel =
 
         <div className="arrival-card__information">
           <h3 className="arrival-card__name">
-            <Dialog.Trigger asChild>
-              <button type="button" onClick={(event) => openDialog("preview", 0, event.currentTarget)}>{car.name}</button>
-            </Dialog.Trigger>
+            <Link className="arrival-card__details-link" to={detailsHref}>{car.name}</Link>
           </h3>
           <p className="arrival-card__price">
             <span><span className="sr-only">Price: </span>{formatPrice(car.price)}</span>

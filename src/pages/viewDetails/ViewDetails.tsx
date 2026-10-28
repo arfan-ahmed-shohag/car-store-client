@@ -1,351 +1,236 @@
 import { Link, useParams } from "react-router";
-import Loader from "../shared/Loader";
-import { cn } from "../../lib/utils";
 import { useGetSimilarCarsQuery, useGetSingleCarQuery } from "../../redux/fetchers/cars/carApi";
-import { MinusIcon, PlusIcon } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, CalendarDays, CarFront, Check, ChevronRight, Fuel, Gauge, LoaderCircle, Minus, Plus, Settings2, ShoppingBag, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCreateOrderMutation } from "../../redux/fetchers/orders/orderApi";
-import { FieldValues } from "react-hook-form";
+import type { ChangeEvent, PointerEvent } from "react";
 import { toast } from "sonner";
 import Review from "../dashboard/user/review/Review";
 import { useGetSingleCarReviewQuery } from "../../redux/fetchers/review/reviewApi";
 import ReactStars from "react-rating-stars-component";
+import type { Cars } from "../products/Products";
+import "./ViewDetails.css";
 
 export interface IReview {
-  _id: string,
-  carId: string,
-  userId: { _id: string, firstName: string, lastName: string },
-  ratting: number,
-  comment: string,
-  createdAt: string
+  _id: string;
+  carId: string;
+  userId: { _id: string; firstName: string; lastName: string };
+  ratting: number;
+  comment: string;
+  createdAt: string;
 }
+
+type CarDetails = Cars & {
+  shortDescription?: string;
+  longDescription?: string;
+};
+
+const formatPrice = (value: number) => Number.isFinite(value) ? value.toLocaleString("en-US") : "—";
+const formatYear = (value: unknown) => {
+  const text = String(value ?? "").trim();
+  if (/^\d{4}$/.test(text)) return text;
+  const date = new Date(text);
+  return Number.isNaN(date.getTime()) ? "—" : String(date.getFullYear());
+};
+const displayValue = (value: string | undefined) => value?.trim() || "—";
 
 const ViewDetails = () => {
   const { id } = useParams();
   const [quantitySell, setQuantity] = useState(1);
   const [imageIndex, setImageIndex] = useState(0);
-
-  const { data, isLoading } = useGetSingleCarQuery(id as string);
-  const { data: review, isLoading: reviewLoading } = useGetSingleCarReviewQuery(id as string);
-
-  const [
-    createOrder,
-    {
-      isLoading: createOrderLoading,
-      isSuccess,
-      data: createOrderData,
-      isError,
-      error,
-    },
-  ] = useCreateOrderMutation();
-
-
-
-  const handleIncrement = () => {
-    setQuantity((prev) => prev + 1);
-  };
-
-  const handleDecrement = () => {
-    setQuantity((prev) => (prev > 1 ? prev - 1 : 1)); // Prevent negative values
-  };
-
-  const handleChange = (e: FieldValues) => {
-    const value = parseInt(e.target.value, 10);
-    setQuantity(isNaN(value) || value < 1 ? 1 : value);
-  };
-
-  const handleOrder = async () => {
-    const car = product?._id;
-    const quantity = quantitySell;
-
-    const orderInfo = {
-      car,
-      quantity,
-    };
-    await createOrder(orderInfo);
-  };
-
-  const toastId = "cart";
+  const [imageZoomed, setImageZoomed] = useState(false);
+  const { currentData: data, isLoading, isFetching, isError: productError, refetch } = useGetSingleCarQuery(id as string, { skip: !id });
+  const product = data?.data as CarDetails | undefined;
+  const { currentData: review, isLoading: reviewLoading, isError: reviewError } = useGetSingleCarReviewQuery(id as string, { skip: !id });
+  const { currentData: similarProducts, isLoading: similarProductsLoading, isError: similarProductsError } = useGetSimilarCarsQuery(
+    { carId: id as string, model: product?.model },
+    { skip: !id || !product?.model },
+  );
+  const [createOrder, { isLoading: createOrderLoading, isSuccess, data: createOrderData, isError, error }] = useCreateOrderMutation();
 
   useEffect(() => {
-    if (createOrderLoading) {
-      toast.loading("Processing ........", { id: toastId });
-    }
+    setImageIndex(0);
+    setImageZoomed(false);
+    setQuantity(1);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [id]);
+
+  const handleIncrement = () => setQuantity((previous) => previous + 1);
+  const handleDecrement = () => setQuantity((previous) => previous > 1 ? previous - 1 : 1);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value, 10);
+    setQuantity(isNaN(value) || value < 1 ? 1 : value);
+  };
+  const handleOrder = async () => {
+    if (!product) return;
+    await createOrder({ car: product._id, quantity: quantitySell });
+  };
+
+  useEffect(() => {
+    const toastId = "cart";
+    if (createOrderLoading) toast.loading("Processing ........", { id: toastId });
     if (isSuccess) {
       toast.success(createOrderData?.message, { id: toastId });
       if (createOrderData?.data) {
-        setTimeout(() => {
-          window.location.href = createOrderData.data;
-        }, 1000);
+        setTimeout(() => { window.location.href = createOrderData.data; }, 1000);
       }
     }
     if (isError) {
       const err = error as { data?: { errorMessage?: string } };
-      toast.error(err?.data?.errorMessage ?? 'Something went wrong', { id: toastId });
+      toast.error(err?.data?.errorMessage ?? "Something went wrong", { id: toastId });
     }
   }, [createOrderData?.data, createOrderData?.message, error, isError, createOrderLoading, isSuccess]);
 
-  const { data: similarProducts, isLoading: similarProductsLoading } =
-    useGetSimilarCarsQuery({ carId: id as string, model: data?.data?.model });
-
-
-
-  if (isLoading) {
-    return <Loader />;
+  if (isLoading || (isFetching && !product)) {
+    return <main className="car-details" aria-busy="true"><div className="car-details__loading" role="status"><LoaderCircle className="animate-spin" aria-hidden="true" /><p>Loading car details…</p></div></main>;
   }
-  if (reviewLoading) {
-    return <Loader />
+  if (productError || !product) {
+    return (
+      <main className="car-details">
+        <div className="car-details__state">
+          <CarFront aria-hidden="true" /><h1>This car is unavailable</h1>
+          <p>We couldn’t load this car. Please try again or explore our collection.</p>
+          <div><button type="button" className="car-details__button" onClick={() => refetch()}>Try again</button><Link className="car-details__text-link" to="/products">Browse cars <ArrowRight aria-hidden="true" /></Link></div>
+        </div>
+      </main>
+    );
   }
 
-  if (similarProductsLoading) {
-    return <Loader />
-  }
-  const product = data?.data;
+  const reviews: IReview[] = Array.isArray(review?.data) ? review.data : [];
+  const similarCars: Cars[] = Array.isArray(similarProducts?.data) ? similarProducts.data : [];
+  const images: string[] = Array.isArray(product.images) ? product.images : [];
+  const activeImage = Math.min(imageIndex, Math.max(0, images.length - 1));
+  const tags: string[] = Array.isArray(product.tags) ? product.tags : [];
+  const features: string[] = Array.isArray(product.features) ? product.features : [];
+  const averageRatting = reviews.length > 0 ? reviews.reduce((sum, item) => sum + item.ratting, 0) / reviews.length : 0;
+  const releaseYear = formatYear(product.releaseYear);
+  const fullDescription = product.longDescription?.trim() || product.description?.trim() || product.shortDescription?.trim() || "";
+  const summaryText = product.shortDescription?.trim() || product.description?.trim() || fullDescription;
+  const shortDescription = summaryText.length > 200 ? `${summaryText.slice(0, 200).replace(/\s+\S*$/, "")}…` : summaryText;
+  const descriptionParagraphs = fullDescription.split(/\n\s*\n/).map((paragraph) => paragraph.trim()).filter(Boolean);
+  const specifications = [
+    ["Brand", displayValue(product.brand)], ["Model", displayValue(product.model)],
+    ["Release Year", releaseYear], ["Body Type", displayValue(product.bodyType)],
+    ["Color", displayValue(product.color)], ["Transmission", displayValue(product.transmission)],
+    ["Fuel Type", displayValue(product.fuelType)], ["Engine Size", displayValue(product.engineSize)],
+    ["Mileage", displayValue(product.mileage)], ["Category", displayValue(product.category)],
+  ];
+  const highlights = [
+    { label: "Release year", value: releaseYear, Icon: CalendarDays },
+    { label: "Fuel type", value: displayValue(product.fuelType), Icon: Fuel },
+    { label: "Transmission", value: displayValue(product.transmission), Icon: Settings2 },
+    { label: "Mileage", value: displayValue(product.mileage), Icon: Gauge },
+  ];
 
-  const reviews = (review?.data)
-
-
-  const averageRatting = reviews.length > 0
-    ? reviews.reduce((sum: number, review: IReview) => sum + review.ratting, 0) / reviews.length
-    : 0;
-
+  const handleImagePointer = (event: PointerEvent<HTMLDivElement>) => {
+    if (images.length === 0) return;
+    if (event.pointerType === "touch" || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      if (imageZoomed) setImageZoomed(false);
+      return;
+    }
+    const frame = event.currentTarget;
+    const bounds = frame.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((event.clientX - bounds.left) / bounds.width) * 100));
+    const y = Math.max(0, Math.min(100, ((event.clientY - bounds.top) / bounds.height) * 100));
+    frame.style.setProperty("--gallery-zoom-x", `${x}%`);
+    frame.style.setProperty("--gallery-zoom-y", `${y}%`);
+    if (!imageZoomed) setImageZoomed(true);
+  };
 
   return (
-    <div className="flex justify-center flex-col max-w-full mx-auto px-6 min-h-[calc(100vh-288px)] w-full pt-10">
-      <div className="flex items-center justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 items-center">
-          {/* Product Image */}
-          <div className="flex flex-col space-y-4">
-            <img
-              src={product?.images[imageIndex]}
-              alt="Product"
-              className="rounded-lg shadow-lg w-full h-96 object-cover dark:shadow-gray-800"
-            />
-            <div className="flex items-center gap-6 justify-start">
-              {
-                product?.images?.map((image: string, index: number) =>
-                  <img key={index} src={image} alt="Product" onClick={() => setImageIndex(index)}
-                    className={index == imageIndex ? "rounded-lg border-2 border-blue-500 w-full max-w-36 h-20 shadow-lg shadow-gray-800" : "rounded-lg shadow-lg w-full max-w-36 h-20 dark:shadow-gray-800"} />
-                )
-              }
+    <main className="car-details">
+      <div className="car-details__container">
+        <nav className="car-details__breadcrumb" aria-label="Breadcrumb">
+          <ol><li><Link to="/">Home</Link></li><li><ChevronRight aria-hidden="true" /><Link to="/products">Cars</Link></li><li aria-current="page"><ChevronRight aria-hidden="true" /><span>{product.name}</span></li></ol>
+        </nav>
+
+        <section className="car-details__overview" aria-labelledby="car-title">
+          <div className="car-gallery">
+            <div
+              className="car-gallery__stage"
+              data-zoomed={imageZoomed}
+              data-has-image={images.length > 0}
+              onPointerEnter={handleImagePointer}
+              onPointerMove={handleImagePointer}
+              onPointerLeave={() => setImageZoomed(false)}
+              onPointerCancel={() => setImageZoomed(false)}
+            >
+              {images.length > 0 ? images.map((image, index) => (
+                <img key={`${product._id}-${index}`} src={image} alt={index === activeImage ? `${product.name}, photo ${index + 1}` : ""} aria-hidden={index !== activeImage} data-active={index === activeImage} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+              )) : <div className="car-gallery__empty"><CarFront aria-hidden="true" /><span>Photo not available</span></div>}
+              {product.bodyType && <span className="car-gallery__label"><CarFront aria-hidden="true" />{product.bodyType}</span>}
+              {images.length > 0 && <span className="car-gallery__count">{activeImage + 1} / {images.length}</span>}
             </div>
-          </div>
-
-          {/* Product Details */}
-          <div>
-            <h1 className="text-3xl font-bold mb-4 dark:text-white">
-              {product?.name}
-            </h1>
-            <p className="dark:text-gray-300 mb-2">{product?.description}</p>
-
-            {/* Price Section */}
-            <div className="flex items-center space-x-4 mb-4">
-              <span className="text-2xl font-semibold text-red-600">
-                {product?.price.toLocaleString()}{" "}
-                <span className="text-gray-900 dark:text-gray-300">Tk</span>
-              </span>
-            </div>
-
-            <div className="my-2">
-              <p className="flex items-center gap-2 font-semibold text-gray-700 dark:text-gray-300">Average Review: <ReactStars
-                count={5}
-                value={averageRatting}
-                size={24}
-                isHalf={true}
-                edit={false}
-                activeColor="#ffd700"
-              /><span className="text-sm">({reviews?.length})</span></p>
-            </div>
-
-            <div className="flex items-center justify-start mb-4 gap-6">
-              {/* Availability */}
-              <div>
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
-                  Available:
-                </span>
-                <span
-                  className={cn(
-                    "ml-2 font-semibold",
-                    {
-                      "text-green-500": product?.inStock == true,
-                    },
-                    { "text-red-500": !product?.inStock }
-                  )}
-                >
-                  {product.inStock ? (
-                    <>
-                      <span>IN STOCK ✅</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Out of Stock</span> <span>❌</span>
-                    </>
-                  )}
-                </span>
+            {images.length > 1 && (
+              <div className="car-gallery__thumbnails" role="group" aria-label="Car photos">
+                {images.map((image, index) => <button key={`${product._id}-${index}`} type="button" aria-label={`View photo ${index + 1} of ${product.name}`} aria-pressed={index === activeImage} onClick={() => { setImageIndex(index); setImageZoomed(false); }}><img src={image} alt="" loading="lazy" /></button>)}
               </div>
-              <div>
-                <p className="dark:text-gray-300 text-gray-700">
-                  <span className="font-semibold">Release:</span> {new Date(product?.releaseYear).getFullYear()}
-                </p>
-              </div>
-            </div>
+            )}
+          </div>
 
-            {/* Product Info */}
-            <div className="mb-4 space-y-3">
-              <p className="dark:text-gray-300 text-gray-700">
-                <span className="font-semibold">Brand:</span> {product?.brand}
-              </p>
-              <p className="dark:text-gray-300">
-                <span className="font-semibold text-gray-700">Model:</span>{" "}
-                {product?.model}
-              </p>
+          <div className="car-summary">
+            <div className="car-summary__top"><p className="car-details__eyebrow">{product.brand}</p><span className="car-summary__stock" data-in-stock={product.inStock}>{product.inStock ? "In stock" : "Out of stock"}</span></div>
+            <h1 id="car-title">{product.name}</h1>
+            <div className="car-summary__rating" aria-label={`Average review: ${averageRatting.toFixed(1)} out of 5, ${reviews.length} reviews`}>
+              <ReactStars key={`${id}-${averageRatting}`} count={5} value={averageRatting} size={20} isHalf={true} edit={false} activeColor="#f57c1f" />
+              <span>{averageRatting.toFixed(1)} <span>({reviews.length} reviews)</span></span>
             </div>
+            <p className="car-summary__price">{formatPrice(product.price)} <span>Tk</span></p>
+            <p className="car-summary__description">{shortDescription}</p>
+            {fullDescription && fullDescription !== shortDescription && <a className="car-summary__read-more" href="#car-description">Read full description <ArrowDown aria-hidden="true" /></a>}
+            <dl className="car-summary__highlights">
+              {highlights.map(({ label, value, Icon }) => <div key={label}><Icon aria-hidden="true" /><div><dt>{label}</dt><dd>{value}</dd></div></div>)}
+            </dl>
+            {tags.length > 0 && <div className="car-summary__tags"><span>Tags</span>{tags.map((tag, index) => <span key={`${tag}-${index}`}>#{tag}</span>)}</div>}
+            <div className="car-summary__purchase">
+              <div className="car-quantity"><label htmlFor="car-quantity">Quantity</label><div><button type="button" onClick={handleDecrement} aria-label="Decrease quantity"><Minus aria-hidden="true" /></button><input id="car-quantity" type="number" value={quantitySell} onChange={handleChange} /><button type="button" onClick={handleIncrement} aria-label="Increase quantity"><Plus aria-hidden="true" /></button></div></div>
+              <button type="button" className="car-summary__add-cart"><ShoppingCart aria-hidden="true" />Add to cart</button>
+              <button type="button" className="car-details__button car-summary__buy" onClick={handleOrder} aria-busy={createOrderLoading}>{createOrderLoading ? <LoaderCircle className="animate-spin" aria-hidden="true" /> : <ShoppingBag aria-hidden="true" />}{createOrderLoading ? "Processing…" : "Buy Now"}</button>
+            </div>
+            <Link className="car-summary__contact" to="/contact">Questions about this car? Contact our team <ArrowUpRight aria-hidden="true" /></Link>
+          </div>
+        </section>
 
-            <div>
-              <p className="dark:text-gray-300 font-semibold text-gray-700 flex items-center gap-2">Tags:
-                {
-                  product?.tags?.map((tag: string, index: number) => <span key={index} className="mr-3 font-medium">#{tag} </span>)
-                }</p>
-            </div>
-
-            {/* Quantity and Add to Cart */}
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-8">
-              <div className="flex items-center justify-center w-full">
-                <button
-                  onClick={handleDecrement}
-                  className="group py-4 px-6 border border-gray-400 dark:border-gray-700 rounded-l-full shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-300 dark:hover:shadow-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
-                >
-                  <MinusIcon />
-                </button>
-                <input
-                  type="number"
-                  onChange={handleChange}
-                  className="font-semibold text-gray-900 dark:text-gray-100 text-lg py-[13px] px-6 w-full lg:max-w-[118px] border-y border-gray-400 dark:border-gray-700 bg-transparent placeholder:text-gray-900 dark:placeholder:text-gray-400 text-center hover:bg-gray-50 dark:hover:bg-gray-800 focus-within:bg-gray-50 dark:focus-within:bg-gray-800 outline-0"
-                  value={quantitySell}
-                />
-                <button
-                  onClick={handleIncrement}
-                  className="group py-4 px-6 border border-gray-400 dark:border-gray-700 rounded-r-full shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-300 dark:hover:shadow-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
-                >
-                  <PlusIcon />
-                </button>
-              </div>
-              <button
-                onClick={handleOrder}
-                className="bg-black text-white px-6 py-2 rounded-lg shadow-lg hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-gray-800"
-              >
-                Buy Now
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* specification */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="col-span-1 lg:col-span-2">
-          <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
-            <p className="dark:text-black text-sm bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Specification</p>
-          </div>
-          <div className="max-w-full bg-gray-100 dark:bg-gray-900 shadow rounded-md mt-6">
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Brand</div>
-              <div className="flex-1">{product?.brand}</div>
-            </div>
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Model</div>
-              <div className="flex-1">{product?.model}</div>
-            </div>
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Release Year</div>
-              <div className="flex-1">{new Date(product?.releaseYear).getFullYear()}</div>
-            </div>
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Body Type</div>
-              <div className="flex-1">{product?.bodyType}</div>
-            </div>
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Color</div>
-              <div className="flex-1">{product?.color}</div>
-            </div>
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Transmission</div>
-              <div className="flex-1">{product?.transmission}</div>
-            </div>
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Fuel Type</div>
-              <div className="flex-1">{product?.fuelType}</div>
-            </div>
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Engine Size</div>
-              <div className="flex-1">{product?.engineSize}</div>
-            </div>
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Mileage</div>
-              <div className="flex-1">{product?.mileage}</div>
-            </div>
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Category</div>
-              <div className="flex-1">{product?.category}</div>
-            </div>
-            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">Features</div>
-              <div className="flex flex-col gap-2 w-full pl-2">
-                {
-                  product?.features.map((item: string, index: number) => <li key={index} className="flex-1">{item}</li>)
-                }
-              </div>
-            </div>
-            <div className="flex justify-between px-4 py-4 mx-2 text-left">
-              <div className="font-semibold min-w-52">
-                Warranty Details
-              </div>
-              <div className="flex-1">{product?.warranty}</div>
-            </div>
-          </div>
-          <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
-            <p className="dark:text-black text-sm bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Reviews</p>
-          </div>
-          <div className="my-4">
-            <p className="font-semibold dark:tect-gray-800">Customer Reviews</p>
-            {reviews?.slice(0, 10)?.map((review: IReview, index: number) => <div key={index} className="p-4 w-full rounded-md bg-gray-200 dark:bg-gray-800 mt-4">
-              <ReactStars
-                count={5}
-                value={review?.ratting}
-                size={24}
-                isHalf={true}
-                edit={false}
-                activeColor="#ffd700"
-              />
-              <p className="dark:text-gray-100">{review?.comment}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">by {review?.userId?.firstName} {review?.userId?.lastName}, {new Date(review?.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-              })}</p>
-            </div>)
-
-            }
-          </div>
-          <p className="font-semibold dark:tect-gray-800 mt-2">Your Review</p>
-          <Review id={product?._id} />
-        </div>
-        <div className="col-span-1">
-          <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
-            <p className="dark:text-black text-sm bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Similar Products</p>
-          </div>
-          {
-            similarProducts?.data?.length > 0 ? similarProducts?.data?.map((product: any, index: number) => (<Link to={`/view-details/${product?._id}`}>
-              <div key={index} className="flex items-center gap-4 mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
-                <img src={product?.images[0]} alt="Similar Product" className="w-20 h-20 object-cover rounded-md" />
-                <div>
-                  <h3 className="font-semibold dark:text-gray-800">{product?.name}</h3>
-                  <p className="text-sm dark:text-gray-600">{product?.price.toLocaleString()} Tk</p>
+        <div className="car-details__lower">
+          <div className="car-details__information">
+            {descriptionParagraphs.length > 0 && (
+              <section id="car-description" className="car-description" aria-labelledby="car-description-title">
+                <div className="car-details__heading">
+                  <p className="car-details__eyebrow">A closer look</p>
+                  <h2 id="car-description-title">Details</h2>
                 </div>
-              </div></Link>)) : <p className="dark:text-gray-300 mt-4">No similar products found.</p>
-          }
+                <div className="car-description__content">
+                  {descriptionParagraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+                </div>
+              </section>
+            )}
+            <section className="car-specifications" aria-labelledby="car-specifications-title">
+              <div className="car-details__heading"><p className="car-details__eyebrow">Get to know this car</p><h2 id="car-specifications-title">Specifications</h2></div>
+              <dl className="car-specifications__table">
+                {specifications.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
+                <div><dt>Features</dt><dd>{features.length > 0 ? <ul>{features.map((feature, index) => <li key={`${feature}-${index}`}><Check aria-hidden="true" />{feature}</li>)}</ul> : "—"}</dd></div>
+                <div><dt>Warranty Details</dt><dd>{displayValue(product.warranty)}</dd></div>
+              </dl>
+            </section>
+
+            <section className="car-reviews" aria-labelledby="car-reviews-title">
+              <div className="car-details__heading"><p className="car-details__eyebrow">From the driver’s seat</p><h2 id="car-reviews-title">Customer reviews <span>({reviews.length})</span></h2></div>
+              {reviewLoading ? <p className="car-details__empty" role="status">Loading reviews…</p> : reviewError ? <p className="car-details__empty">Reviews are unavailable right now. Please try again later.</p> : reviews.length === 0 ? <p className="car-details__empty">No reviews yet. Share your thoughts about this car below.</p> : (
+                <div className="car-reviews__list">{reviews.slice(0, 10).map((item) => <article className="car-review" key={item._id}><ReactStars count={5} value={item.ratting} size={20} isHalf={true} edit={false} activeColor="#f57c1f" /><p>{item.comment}</p><div className="car-review__author"><span>{[item.userId?.firstName, item.userId?.lastName].filter(Boolean).join(" ") || "Customer"}</span><time dateTime={item.createdAt}>{new Date(item.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long" })}</time></div></article>)}</div>
+              )}
+              <Review key={product._id} id={product._id} />
+            </section>
+          </div>
+
+          <aside className="car-similar" aria-labelledby="similar-cars-title">
+            <div className="car-details__heading"><p className="car-details__eyebrow">Keep exploring</p><h2 id="similar-cars-title">You may also like</h2></div>
+            {similarProductsLoading ? <p className="car-details__empty" role="status">Finding more cars…</p> : similarProductsError ? <p className="car-details__empty">More cars are unavailable right now.</p> : similarCars.length === 0 ? <p className="car-details__empty">No recommendations available yet.</p> : (
+              <div className="car-similar__list">{similarCars.map((car) => <Link key={car._id} to={`/view-details/${car._id}`} className="car-similar__card"><div className="car-similar__image">{car.images?.[0] ? <img src={car.images[0]} alt="" loading="lazy" /> : <CarFront aria-hidden="true" />}</div><div><h3>{car.name}</h3><p>{formatPrice(car.price)} <span>Tk</span></p></div><ArrowRight aria-hidden="true" /></Link>)}</div>
+            )}
+          </aside>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
