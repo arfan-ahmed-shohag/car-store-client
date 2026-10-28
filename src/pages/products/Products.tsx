@@ -6,6 +6,7 @@ import CatalogFilterFields from "./components/CatalogFilters";
 import { catalogFilterLabels, catalogSortOptions, createCatalogFilters, demoCatalogCars, type CatalogFilters } from "./data/catalog";
 import "../home/components/CarCollection.css";
 import "./Products.css";
+import "../shared/PageHero.css";
 
 export interface Cars {
   _id: string;
@@ -68,13 +69,13 @@ const Products = () => {
 
   return (
     <main className="catalog-page">
-      <section className="catalog-hero" aria-labelledby="catalog-title">
-        <img className="catalog-hero__image" src="/images/hero/service-and-repair.jpg" alt="" />
-        <div className="catalog-hero__shade" aria-hidden="true" />
-        <div className="catalog-page__container">
-          <p className="catalog-page__eyebrow">Explore the collection</p>
-          <h1 id="catalog-title">Find your <span>next drive.</span></h1>
-          <p>From everyday journeys to weekend escapes, discover a car that feels like you.</p>
+      <section className="page-hero catalog-hero" aria-labelledby="catalog-title">
+        <img className="page-hero__image catalog-hero__image" src="/images/hero/service-and-repair.jpg" alt="" />
+        <div className="page-hero__shade" aria-hidden="true" />
+        <div className="page-hero__content">
+          <p className="page-hero__eyebrow">Explore the collection</p>
+          <h1 className="page-hero__title" id="catalog-title">Find your <span>next drive.</span></h1>
+          <p className="page-hero__description">From everyday journeys to weekend escapes, discover a car that feels like you.</p>
         </div>
       </section>
 

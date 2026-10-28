@@ -7,6 +7,7 @@ import { ArrowUpRight, LoaderCircle, Mail, MapPin, MessageCircle, Phone, Send } 
 import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa6";
 import { footerContent, footerSocialProfiles } from "../shared/footerData";
 import "./Contact.css";
+import "../shared/PageHero.css";
 
 class CustomError extends Error {
   data?: { message?: string };
@@ -43,13 +44,13 @@ const Contact = () => {
   }, [data?.message, error, isLoading, isSuccess]);
   return (
     <main className="contact-page">
-      <section className="contact-hero" aria-labelledby="contact-title">
-        <img className="contact-hero__image" src="/images/promotions/bmw-city.webp" alt="" />
-        <div className="contact-hero__shade" aria-hidden="true" />
-        <div className="contact-page__container">
-          <p className="contact-page__eyebrow">Let’s connect</p>
-          <h1 id="contact-title">Let’s talk about<br /><span>your next drive.</span></h1>
-          <p className="contact-hero__description">Have a car in mind or need a little guidance? Tell us what you’re looking for. We’re here to help.</p>
+      <section className="page-hero contact-hero" aria-labelledby="contact-title">
+        <img className="page-hero__image contact-hero__image" src="/images/promotions/bmw-city.webp" alt="" />
+        <div className="page-hero__shade" aria-hidden="true" />
+        <div className="page-hero__content">
+          <p className="page-hero__eyebrow">Let’s connect</p>
+          <h1 className="page-hero__title" id="contact-title">Let’s talk about<br /><span>your next drive.</span></h1>
+          <p className="page-hero__description">Have a car in mind or need a little guidance? Tell us what you’re looking for. We’re here to help.</p>
         </div>
       </section>
 

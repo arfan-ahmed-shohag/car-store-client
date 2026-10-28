@@ -2,6 +2,7 @@ import { useEffect, type MouseEvent } from "react";
 import { Link } from "react-router";
 import { ArrowRight, CarFront, Check, ClipboardList, MessagesSquare } from "lucide-react";
 import "./About.css";
+import "../shared/PageHero.css";
 
 const values = [
   {
@@ -48,13 +49,13 @@ export default function About() {
 
   return (
     <main className="about-page">
-      <section className="about-hero" aria-labelledby="about-title">
-        <img className="about-hero__image" src="/images/promotions/porsche-road.webp" alt="" />
-        <div className="about-hero__shade" aria-hidden="true" />
-        <div className="about-page__container">
-          <p className="about-page__eyebrow">About AutoSphere</p>
-          <h1 id="about-title">More than a car.<br /><span>A new beginning.</span></h1>
-          <p className="about-hero__description">From the daily commute to the drive you’ve always wanted, AutoSphere brings your next car into focus.</p>
+      <section className="page-hero about-hero" aria-labelledby="about-title">
+        <img className="page-hero__image about-hero__image" src="/images/promotions/porsche-road.webp" alt="" />
+        <div className="page-hero__shade" aria-hidden="true" />
+        <div className="page-hero__content">
+          <p className="page-hero__eyebrow">About AutoSphere</p>
+          <h1 className="page-hero__title" id="about-title">More than a car.<br /><span>A new beginning.</span></h1>
+          <p className="page-hero__description">From the daily commute to the drive you’ve always wanted, AutoSphere brings your next car into focus.</p>
         </div>
       </section>
 
