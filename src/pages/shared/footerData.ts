@@ -20,6 +20,8 @@ export const footerNavigation = [
       { label: "About AutoSphere", href: "/about" },
       { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "Terms & Conditions", href: "/terms-and-conditions" },
+      { label: "Return & Refund Policy", href: "/return-refund-policy" },
+      { label: "Cancellation Policy", href: "/cancellation-policy" },
       { label: "Browse Cars", href: "/products" },
       { label: "New Arrivals", href: "/#new-arrivals" },
       { label: "Featured Cars", href: "/#featured-cars" },
