@@ -10,7 +10,7 @@ export const footerSocialProfiles = {
   facebook: "https://www.facebook.com/arfan.arfanahmed.73",
   linkedin: "https://www.linkedin.com/in/arfan-ahmed-shohag/",
   github: "https://github.com/arfan-ahmed-shohag",
-  whatsapp: `https://wa.me/${footerContent.whatsapp.replace(/^0/, "880")}`,
+  whatsapp: `https://wa.me/${footerContent.whatsapp.replace(/^0/, "+880")}`,
 };
 
 export const footerNavigation = [

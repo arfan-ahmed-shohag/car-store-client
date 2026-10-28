@@ -16,7 +16,7 @@
 .terms-layout { display: grid; grid-template-columns: 288px minmax(0, 1fr); align-items: start; gap: 48px; }
 .terms-layout > * { min-width: 0; }
 .terms-page__eyebrow { margin: 0 0 12px; color: var(--terms-accent); font-size: 11px; line-height: 18px; letter-spacing: 0.18em; text-transform: uppercase; }
-.terms-sidebar { position: sticky; top: 104px; display: grid; gap: 24px; }
+.terms-sidebar { position: sticky; top: 104px; display: grid; gap: 24px; max-height: calc(100svh - 128px); overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: thin; }
 .terms-contents { border: 1px solid var(--terms-border); border-radius: 8px; padding: 24px 12px 12px; background: var(--terms-surface); }
 .terms-contents h2 { margin: 0 12px 16px; font-size: 18px; font-weight: 500; line-height: 26px; }
 .terms-contents ol { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
@@ -67,7 +67,7 @@
 @media (max-width: 1023px) {
   .terms-page { --terms-section-gap: 64px; }
   .terms-layout { grid-template-columns: 232px minmax(0, 1fr); gap: 24px; }
-  .terms-sidebar { position: static; }
+  .terms-sidebar { position: static; max-height: none; overflow: visible; }
   .terms-document { padding: 28px; }
   .terms-document__header h2 { font-size: 30px; }
   .terms-section h2 { font-size: 21px; }
@@ -96,9 +96,6 @@
   .terms-document__header h2 { font-size: 26px; }
   .terms-section h2 { font-size: 20px; }
   .terms-contact { padding: 16px; }
-}
-@media (max-height: 1000px) and (min-width: 1024px) {
-  .terms-sidebar { position: static; }
 }
 @media (prefers-reduced-motion: reduce) {
   .terms-page a { transition: none; }
