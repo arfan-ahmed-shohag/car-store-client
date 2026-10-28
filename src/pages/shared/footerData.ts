@@ -17,7 +17,7 @@ export const footerNavigation = [
   {
     title: "Information",
     links: [
-      { label: "About AutoSphere", href: "/#autosphere-about" },
+      { label: "About AutoSphere", href: "/about" },
       { label: "Browse Cars", href: "/products" },
       { label: "New Arrivals", href: "/#new-arrivals" },
       { label: "Featured Cars", href: "/#featured-cars" },

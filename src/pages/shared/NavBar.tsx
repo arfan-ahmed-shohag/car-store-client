@@ -13,6 +13,7 @@ import BrandLogo from "./BrandLogo";
 const menuItems = [
   { label: "Home", path: "/" },
   { label: "Products", path: "/products" },
+  { label: "About", path: "/about" },
   { label: "Contact", path: "/contact" },
 ];
 

@@ -12,6 +12,7 @@ import ProtectedRoute from "../layout/ProtectedRoute";
 import Home from "../pages/home/Home";
 import VerifyOrder from "../pages/verifyOrder/VerifyOrder";
 import Contact from "../pages/contact/Contact";
+import About from "../pages/about/About";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
       {
         path: "contact",
         element: <Contact />,
+      },
+      {
+        path: "about",
+        element: <About />,
       },
     ],
   },
