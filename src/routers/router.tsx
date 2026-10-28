@@ -15,6 +15,7 @@ import Contact from "../pages/contact/Contact";
 import About from "../pages/about/About";
 import Faq from "../pages/faq/Faq";
 import PrivacyPolicy from "../pages/privacyPolicy/PrivacyPolicy";
+import TermsAndConditions from "../pages/termsAndConditions/TermsAndConditions";
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
       {
         path: "privacy-policy",
         element: <PrivacyPolicy />,
+      },
+      {
+        path: "terms-and-conditions",
+        element: <TermsAndConditions />,
       },
     ],
   },
