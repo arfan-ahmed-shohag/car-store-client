@@ -13,6 +13,7 @@ import Home from "../pages/home/Home";
 import VerifyOrder from "../pages/verifyOrder/VerifyOrder";
 import Contact from "../pages/contact/Contact";
 import About from "../pages/about/About";
+import Faq from "../pages/faq/Faq";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: "about",
         element: <About />,
+      },
+      {
+        path: "faq",
+        element: <Faq />,
       },
     ],
   },

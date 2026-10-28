@@ -31,6 +31,7 @@ export const footerNavigation = [
       { label: "My Account", href: "/user/profile" },
       { label: "My Orders", href: "/user/order" },
       { label: "Create an Account", href: "/registration" },
+      { label: "FAQs", href: "/faq" },
       { label: "Offers & Deals", href: "/#daily-deal-title" },
       { label: "Newsletter", href: "/#newsletter-title" },
       { label: "Help & Support", href: "/contact" },
