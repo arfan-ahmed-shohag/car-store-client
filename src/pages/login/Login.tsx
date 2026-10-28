@@ -3,12 +3,12 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useLoginMutation } from "../../redux/fetchers/auth/authApi";
 import { toast } from "react-toastify";
 import { TbFidgetSpinner } from "react-icons/tb";
-import logo from "/logo.png";
-import logo2 from "/logo2.png";
+import { ArrowRight, CarFront, LockKeyhole, Mail, ShieldCheck, UserRound } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useAppDispatch } from "../../redux/hooks";
 import { setUser } from "../../redux/fetchers/auth/authSlice";
 import { decodeToken } from "../../utils/jwtDecode";
+import "./Login.css";
 
 const Login = () => {
   const { register, handleSubmit, setValue } = useForm();
@@ -52,90 +52,74 @@ const Login = () => {
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <Link
-          to="/"
-          className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-        >
-          <img
-            className="w-20 h-20 mr-2 dark:hidden"
-            src={logo}
-            alt="logo"
-          />
-          <img
-            className="w-20 h-20 mr-2 hidden dark:block"
-            src={logo2}
-            alt="logo"
-          />
-          AutoSphere
-        </Link>
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Sign in to your account
-            </h1>
-            <div className="flex items-center justify-around">
-              <Button onClick={() => fillDemo("user")}>User Credential</Button>
-              <Button onClick={() => fillDemo("admin")}>Admin Credential</Button>
+    <section className="login-page" aria-labelledby="login-title">
+      <div className="login-page__container">
+        <div className="login-page__layout">
+          <aside className="login-story" aria-labelledby="login-story-title">
+            <img className="login-story__image" src="/images/hero/drive-your-dream.jpg" alt="" />
+            <div className="login-story__shade" aria-hidden="true" />
+            <div className="login-story__copy">
+              <p className="login-story__eyebrow">Welcome to AutoSphere</p>
+              <h2 id="login-story-title">Your next drive.<br /><span>Starts here.</span></h2>
+              <p className="login-story__description">From everyday journeys to open-road adventures, find a car that feels like you.</p>
             </div>
-            <form
-              className="space-y-4 md:space-y-6"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Your email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@company.com"
-                  {...register("email")}
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  {...register("password")}
-                />
-              </div>
-              {isLoading ? (
-                <Button className="w-full">
-                  <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  className="w-full"
-                >
-                  Sign in
-                </Button>
-              )}
+            <div className="login-story__footer">
+              <CarFront aria-hidden="true" />
+              <p>Every journey begins with the right car.</p>
+            </div>
+          </aside>
 
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet?{" "}
-                <Link
-                  to="/registration"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Sign up
-                </Link>
-              </p>
-            </form>
+          <div className="login-panel">
+            <div className="login-panel__content">
+              <div className="login-panel__heading">
+                <p className="login-panel__eyebrow">Welcome back</p>
+                <h1 id="login-title">Sign in to your account</h1>
+                <p>Good to see you again. Let’s get you back on the road.</p>
+              </div>
+
+              <form className="login-form" onSubmit={handleSubmit(onSubmit)} aria-busy={isLoading}>
+                <div className="login-form__field">
+                  <label htmlFor="email">Your email</label>
+                  <div className="login-form__input-wrap">
+                    <Mail aria-hidden="true" />
+                    <input type="email" id="email" className="login-form__input" placeholder="name@company.com" {...register("email")} />
+                  </div>
+                </div>
+                <div className="login-form__field">
+                  <label htmlFor="password">Password</label>
+                  <div className="login-form__input-wrap">
+                    <LockKeyhole aria-hidden="true" />
+                    <input type="password" id="password" placeholder="••••••••" className="login-form__input" {...register("password")} />
+                  </div>
+                </div>
+                {isLoading ? (
+                  <Button className="login-form__submit" aria-label="Signing in">
+                    <TbFidgetSpinner className="animate-spin" size={24} />
+                    <span>Signing in…</span>
+                  </Button>
+                ) : (
+                  <Button type="submit" className="login-form__submit">
+                    Sign in <ArrowRight aria-hidden="true" />
+                  </Button>
+                )}
+
+                <p className="login-form__signup">
+                  Don’t have an account yet? <Link to="/registration">Sign up</Link>
+                </p>
+              </form>
+
+              <div className="login-demo">
+                <p className="login-demo__label">Explore with a demo account</p>
+                <div className="login-demo__buttons">
+                  <Button type="button" variant="outline" className="login-demo__button" onClick={() => fillDemo("user")}>
+                    <UserRound aria-hidden="true" /> User Credential
+                  </Button>
+                  <Button type="button" variant="outline" className="login-demo__button" onClick={() => fillDemo("admin")}>
+                    <ShieldCheck aria-hidden="true" /> Admin Credential
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
