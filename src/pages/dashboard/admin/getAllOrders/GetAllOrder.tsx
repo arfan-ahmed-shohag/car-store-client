@@ -4,7 +4,7 @@ import { Cars } from "../../../products/Products";
 import { TUser } from "../getAllUser/GetAllUser";
 import Loader from "../../../shared/Loader";
 import OrderBody from "./OrderBody";
-import { Pagination } from "antd";
+import DashboardPagination from "../../components/DashboardPagination";
 
 export type Order = {
   _id: string;
@@ -144,7 +144,7 @@ const GetAllOrder = () => {
         </div>
       )}
 <div className="my-6">
-        <Pagination align="center" pageSize={meta?.limit} current={page} onChange={(value) => setPage(value)} total={meta?.total} />
+        <DashboardPagination pageSize={meta?.limit ?? limit} current={page} onChange={setPage} total={meta?.total} />
       </div>
     </div>
   );

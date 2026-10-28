@@ -6,7 +6,7 @@ import GetAllProductBody from "./GetAllProductBody";
 import { FaSortAmountDown } from "react-icons/fa";
 import { FieldValues } from "react-hook-form";
 import { CiFilter } from "react-icons/ci";
-import { Pagination } from "antd";
+import DashboardPagination from "../../components/DashboardPagination";
 
 const GetAllProducts = () => {
   const [sort, setSort] = useState("");
@@ -250,7 +250,7 @@ const GetAllProducts = () => {
         </tbody>
       </table>
       <div className="my-6">
-        <Pagination align="center" pageSize={metaData?.limit} current={page} onChange={(value) => setPage(value)} total={metaData?.total} />
+        <DashboardPagination pageSize={metaData?.limit ?? limit} current={page} onChange={setPage} total={metaData?.total} />
       </div>
     </div>
   );

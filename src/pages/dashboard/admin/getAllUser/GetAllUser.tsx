@@ -1,4 +1,4 @@
-import { Pagination } from "antd";
+import DashboardPagination from "../../components/DashboardPagination";
 import { useGetAllUserQuery } from "../../../../redux/fetchers/users/userAPi";
 import Loader from "../../../shared/Loader";
 import GetAllUserBody from "./GetAllUserBody";
@@ -170,11 +170,10 @@ const GetAllUser = () => {
       </table>
 
       <div className="my-6">
-        <Pagination
-          align="center"
-          pageSize={metaData?.limit}
+        <DashboardPagination
+          pageSize={metaData?.limit ?? limit}
           current={page}
-          onChange={(value) => setPage(value)}
+          onChange={setPage}
           total={metaData?.total}
         />
       </div>
