@@ -46,7 +46,7 @@ const NavBar = () => {
           id="main-navigation"
           aria-label="Main navigation"
           className={cn(
-            "absolute inset-x-0 top-20 border-b border-zinc-200 bg-white p-5 shadow-lg dark:border-white/10 dark:bg-brand-ink md:static md:block md:border-0 md:p-0 md:shadow-none",
+            "absolute inset-x-0 top-20 border-b border-zinc-200 p-5 shadow-lg dark:border-white/10 md:static md:block md:border-0 md:p-0 md:shadow-none",
             isVisible ? "block" : "hidden",
           )}
         >

@@ -55,10 +55,10 @@
 .arrival-card__ribbon {
   position: absolute;
   z-index: 2;
-  top: 15px;
-  right: -27px;
+  top: 12px;
+  right: -34px;
   display: flex;
-  width: 100px;
+  width: 120px;
   height: 28px;
   align-items: center;
   justify-content: center;

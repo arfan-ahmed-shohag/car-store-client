@@ -1,33 +1,25 @@
-import { useState } from "react";
-
 export default function BrandLogo({ themeAware = false }: { themeAware?: boolean }) {
-  const [originalAvailable, setOriginalAvailable] = useState(false);
-
-  // Add the user's original, unmodified logo at public/autosphere-logo.png.
-  // Keep the existing branding visible until that file is available.
-  if (!originalAvailable) {
-    return (
-      <span className="inline-flex items-center gap-2">
-        {themeAware && (
-          <img src="/logo.png" alt="" className="h-9 w-9 object-contain dark:hidden sm:h-12 sm:w-12" />
-        )}
-        <img src="/logo2.png" alt="" className={`h-9 w-9 object-contain sm:h-12 sm:w-12 ${themeAware ? "hidden dark:block" : ""}`} />
-        <span className={`text-base font-semibold tracking-tight sm:text-xl ${themeAware ? "text-zinc-900 dark:text-white" : "text-white"}`}>
-          Auto<span className="text-brand">Sphere</span>
-        </span>
-      </span>
-    );
-  }
+  const imageClassName = `h-auto object-contain ${themeAware ? "w-[112px] sm:w-[148px] lg:w-[168px]" : "w-[192px]"}`;
 
   return (
-    <span className="inline-flex rounded-md bg-[#FAF9F6] px-2 py-1">
+    <span className={`inline-flex items-center rounded-md ${themeAware ? "p-1 sm:px-2 sm:py-1.5" : "px-3 py-2"}`}>
+      {themeAware && (
+        <img
+          src="/AutoSphereCarLogo.png"
+          alt="AutoSphere — Drive Better, Live Safer"
+          width={2124}
+          height={740}
+          className={`${imageClassName} dark:hidden`}
+        />
+      )}
       <img
-        src="/autosphere-logo.png"
-        alt="AutoSphere — Car Accessories"
-        width={436}
-        height={160}
-        className="h-11 w-[120px] object-contain sm:h-12 sm:w-[132px] lg:h-14 lg:w-[154px]"
-        onError={() => setOriginalAvailable(false)}
+        src="/AutoSphereCarLogo-white.png"
+        alt="AutoSphere — Drive Better, Live Safer"
+        width={2124}
+        height={740}
+        className={`${imageClassName} ${themeAware ? "hidden dark:block" : ""}`}
+        // Keep the original transparent silhouette while excluding generation spill around the lettering.
+        style={{ maskImage: 'url("/AutoSphereCarLogo.png")', maskSize: "100% 100%", maskRepeat: "no-repeat" }}
       />
     </span>
   );

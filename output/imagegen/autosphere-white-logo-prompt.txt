@@ -1,0 +1,12 @@
+Mode: built-in image_gen, edit with transparent_background=true.
+Input: public/AutoSphereCarLogo.png
+Selected asset: public/AutoSphereCarLogo-white.png
+Display: BrandLogo.tsx uses the original logo alpha as a CSS mask for clean matching edges.
+
+Final prompt for the selected asset:
+
+Use case: precise-object-edit.
+Asset type: transparent PNG logo variant for the footer and dark theme of the existing AutoSphere car sales website.
+Input image 1 is the edit target: the supplied AutoSphere logo. Create its light-lettering version for placement on a warm charcoal background.
+Change ONLY the dark/black AutoSphere wordmark and the smaller gray tagline 'DRIVE BETTER, LIVE SAFER', plus the small horizontal separator rules beside the tagline, to clean white (#FFFFFF). Keep the orange car silhouette and orange accents exactly as in the original. Preserve the existing logo identity: same car outline, letterforms, exact wording, proportions, arrangement and spacing. Do not redesign, redraw into a different logo, add any new elements, or replace the font. Keep the full car silhouette and all lettering inside the frame with the same margins. Maintain the original very wide approximately 2.87:1 canvas aspect ratio (original 2124 by 740) and crisp edges suitable for a high-resolution website logo.
+Background MUST be actually transparent with alpha, not black, white, charcoal, a rectangle, checkerboard artwork, or a mockup. No glow, shadows, gradients added to lettering, watermark, decorative badge or background color. The output is the logo asset itself.
