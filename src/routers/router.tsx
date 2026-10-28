@@ -14,6 +14,7 @@ import VerifyOrder from "../pages/verifyOrder/VerifyOrder";
 import Contact from "../pages/contact/Contact";
 import About from "../pages/about/About";
 import Faq from "../pages/faq/Faq";
+import PrivacyPolicy from "../pages/privacyPolicy/PrivacyPolicy";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
       {
         path: "faq",
         element: <Faq />,
+      },
+      {
+        path: "privacy-policy",
+        element: <PrivacyPolicy />,
       },
     ],
   },
