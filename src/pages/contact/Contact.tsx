@@ -3,6 +3,10 @@ import { useCreateContactMutation } from "../../redux/fetchers/orders/orderApi";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "../../components/ui/button";
+import { ArrowUpRight, LoaderCircle, Mail, MapPin, MessageCircle, Phone, Send } from "lucide-react";
+import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import { footerContent, footerSocialProfiles } from "../shared/footerData";
+import "./Contact.css";
 
 class CustomError extends Error {
   data?: { message?: string };
@@ -38,56 +42,82 @@ const Contact = () => {
     }
   }, [data?.message, error, isLoading, isSuccess]);
   return (
-    <div className="bg-gray-100 dark:bg-gray-900 min-h-[calc(100vh-265px)] flex items-center justify-center text-gray-900 dark:text-white">
-      <div className="container mx-auto px-4 py-12 flex flex-col lg:flex-row items-center gap-8">
-        <div className="w-full md:w-3/4 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-            Contact Us
-          </h2>
-          <h3 className="text-2xl font-bold mb-6">Reach Out To Us</h3>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              type="text"
-              placeholder="Name"
-              {...register("name")}
-              className="w-full p-3 mb-4 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              {...register("email")}
-              className="w-full p-3 mb-4 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
-            />
-            <textarea
-              placeholder="Message"
-              {...register("message")}
-              className="w-full p-3 mb-4 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
-            ></textarea>
-            <Button className="w-full">
-              Submit
-            </Button>
-          </form>
+    <main className="contact-page">
+      <section className="contact-hero" aria-labelledby="contact-title">
+        <img className="contact-hero__image" src="/images/promotions/bmw-city.webp" alt="" />
+        <div className="contact-hero__shade" aria-hidden="true" />
+        <div className="contact-page__container">
+          <p className="contact-page__eyebrow">Let’s connect</p>
+          <h1 id="contact-title">Let’s talk about<br /><span>your next drive.</span></h1>
+          <p className="contact-hero__description">Have a car in mind or need a little guidance? Tell us what you’re looking for. We’re here to help.</p>
         </div>
-        <div className="w-full md:w-1/2 relative justify-center hidden lg:flex">
-          <div className="absolute w-80 h-80 -mt-16 bg-indigo-300 dark:bg-indigo-600 rounded-lg transform rotate-45"></div>
-          <div className="relative bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg z-10">
-            <div className="flex items-center mb-4">
-              <span className="text-xl font-bold">AutoSphere</span>
+      </section>
+
+      <div className="contact-content">
+        <div className="contact-page__container contact-grid">
+          <section className="contact-message" aria-labelledby="contact-message-title">
+            <div className="contact-message__heading">
+              <p className="contact-page__eyebrow">We’d love to hear from you</p>
+              <h2 id="contact-message-title">Send us a message</h2>
+              <p>Tell us about the car you have in mind or the question you’d like answered.</p>
             </div>
-            <p className="flex items-center mb-2">
-              <span className="mr-2">📞</span> 017XX-XXXXXX
-            </p>
-            <p className="flex items-center mb-2">
-              <span className="mr-2">✉️</span>carstore@gmail.com
-            </p>
-            <p className="flex items-center mb-4">
-              <span className="mr-2">📍</span> 12/B, Dhanmondi, Dhaka 1209,
-              Bangladesh
-            </p>
-          </div>
+            <form className="contact-form" onSubmit={handleSubmit(onSubmit)} aria-busy={isLoading}>
+              <div className="contact-form__row">
+                <div className="contact-form__field">
+                  <label htmlFor="contact-name">Your name</label>
+                  <input id="contact-name" type="text" placeholder="Name" {...register("name")} />
+                </div>
+                <div className="contact-form__field">
+                  <label htmlFor="contact-email">Email address</label>
+                  <input id="contact-email" type="email" placeholder="Email" {...register("email")} />
+                </div>
+              </div>
+              <div className="contact-form__field">
+                <label htmlFor="contact-message">Your message</label>
+                <textarea id="contact-message" placeholder="Message" {...register("message")} />
+              </div>
+              <Button type="submit" className="contact-form__submit">
+                {isLoading ? <><LoaderCircle className="animate-spin" aria-hidden="true" /> Sending message…</> : <>Send message <Send aria-hidden="true" /></>}
+              </Button>
+            </form>
+          </section>
+
+          <aside className="contact-info" aria-labelledby="contact-info-title">
+            <p className="contact-page__eyebrow">Contact AutoSphere</p>
+            <h2 id="contact-info-title">Talk to our team</h2>
+            <p className="contact-info__description">From finding the right car to planning your next upgrade, we’re ready to help.</p>
+
+            <address className="contact-info__channels">
+              <div className="contact-info__channel">
+                <span className="contact-info__icon"><Phone aria-hidden="true" /></span>
+                <div><h3>Give us a call</h3><a href={`tel:${footerContent.phone.replace(/^0/, "+880")}`}>{footerContent.phone}</a></div>
+              </div>
+              <div className="contact-info__channel">
+                <span className="contact-info__icon"><Mail aria-hidden="true" /></span>
+                <div><h3>Drop us an email</h3><a href={`mailto:${footerContent.email}`}>{footerContent.email}</a></div>
+              </div>
+              <div className="contact-info__channel">
+                <span className="contact-info__icon"><MessageCircle aria-hidden="true" /></span>
+                <div><h3>Chat on WhatsApp</h3><a href={footerSocialProfiles.whatsapp} target="_blank" rel="noopener noreferrer">{footerContent.whatsapp} <ArrowUpRight aria-hidden="true" /></a></div>
+              </div>
+              <div className="contact-info__channel">
+                <span className="contact-info__icon"><MapPin aria-hidden="true" /></span>
+                <div><h3>Find us here</h3><p>{footerContent.address}</p></div>
+              </div>
+            </address>
+
+            <div className="contact-info__socials">
+              <p>Stay connected</p>
+              <nav aria-label="AutoSphere social profiles">
+                <a href={footerSocialProfiles.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook profile"><FaFacebookF aria-hidden="true" /></a>
+                <a href={footerSocialProfiles.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile"><FaLinkedinIn aria-hidden="true" /></a>
+                <a href={footerSocialProfiles.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile"><FaGithub aria-hidden="true" /></a>
+              </nav>
+            </div>
+          </aside>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
