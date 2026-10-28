@@ -46,6 +46,11 @@
 .login-form__input { display: block; width: 100%; min-width: 0; height: 52px; border: 1px solid var(--login-border); border-radius: 6px; padding: 13px 16px 13px 46px; outline: none; background: var(--login-input); color: var(--login-text); font-family: inherit; font-size: 16px; line-height: 24px; transition: border-color 180ms, box-shadow 180ms; }
 .login-form__input::placeholder { color: var(--login-muted); opacity: 0.8; }
 .login-form__input:focus { border-color: #f57c1f; box-shadow: 0 0 0 3px rgb(245 124 31 / 14%); }
+.login-form__input--password { padding-right: 52px; }
+.login-form__password-toggle { position: absolute; top: 50%; right: 4px; display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; border: 0; border-radius: 4px; padding: 0; background: transparent; color: var(--login-muted); cursor: pointer; transform: translateY(-50%); transition: color 180ms, background-color 180ms; }
+.login-form__password-toggle svg { width: 18px; height: 18px; }
+.login-form__password-toggle:hover { background: rgb(245 124 31 / 7%); color: var(--login-accent); }
+.login-form__password-toggle:focus-visible { outline: 2px solid #f57c1f; outline-offset: -2px; }
 .login-page .login-form__submit { width: 100%; height: 52px; gap: 10px; margin-top: 2px; border-radius: 6px; background: #f57c1f; color: #fff; font-family: inherit; font-size: 14px; box-shadow: none; transition: background-color 180ms; }
 .login-page .login-form__submit:hover { background: #df6a12; }
 .login-page .login-form__submit:focus-visible,
@@ -89,6 +94,7 @@
 @media (prefers-reduced-motion: reduce) {
   .login-page a,
   .login-form__input,
+  .login-form__password-toggle,
   .login-page .login-form__submit,
   .login-page .login-demo__button { transition: none; }
 }

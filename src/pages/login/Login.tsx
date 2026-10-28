@@ -1,9 +1,10 @@
 import { Link, useLocation, useNavigate } from "react-router";
+import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useLoginMutation } from "../../redux/fetchers/auth/authApi";
 import { toast } from "react-toastify";
 import { TbFidgetSpinner } from "react-icons/tb";
-import { ArrowRight, CarFront, LockKeyhole, Mail, ShieldCheck, UserRound } from "lucide-react";
+import { ArrowRight, CarFront, Eye, EyeOff, LockKeyhole, Mail, ShieldCheck, UserRound } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useAppDispatch } from "../../redux/hooks";
 import { setUser } from "../../redux/fetchers/auth/authSlice";
@@ -12,6 +13,7 @@ import "./Login.css";
 
 const Login = () => {
   const { register, handleSubmit, setValue } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch();
@@ -89,7 +91,10 @@ const Login = () => {
                   <label htmlFor="password">Password</label>
                   <div className="login-form__input-wrap">
                     <LockKeyhole aria-hidden="true" />
-                    <input type="password" id="password" placeholder="••••••••" className="login-form__input" {...register("password")} />
+                    <input type={showPassword ? "text" : "password"} id="password" placeholder="••••••••" className="login-form__input login-form__input--password" {...register("password")} />
+                    <button type="button" className="login-form__password-toggle" aria-label={showPassword ? "Hide password" : "Show password"} aria-controls="password" onClick={() => setShowPassword((visible) => !visible)}>
+                      {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+                    </button>
                   </div>
                 </div>
                 {isLoading ? (

@@ -6,15 +6,18 @@ import { TbFidgetSpinner } from "react-icons/tb";
 import { ReUsableImageUploder } from "../../utils";
 import { useState } from "react";
 import { ImagePreview } from "../../utils/previewImage";
-import logo2 from "/logo2.png";
-import logo from "/logo.png";
+import { ArrowRight, CarFront, Eye, EyeOff, ImagePlus, LockKeyhole, Mail, Phone, UserRound } from "lucide-react";
 import { Button } from "../../components/ui/button";
+import "../login/Login.css";
+import "./Registration.css";
 
 const Registration = () => {
   const { register, handleSubmit } = useForm();
   const [image, setImage] = useState<File[] | []>([])
   const [preview, setPreview] = useState<string[] | []>([])
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [registration, { isLoading }] = useRegisterMutation();
   const navigate = useNavigate();
@@ -60,149 +63,117 @@ const Registration = () => {
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:min-h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 max-w-4xl max-sm:max-w-lg xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <Link
-              to="/"
-              className="flex items-center justify-center gap-2 mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-            >
-              <img src={logo} className="h-20 dark:hidden" alt="Flowbite Logo" />
-              <img src={logo2} className="h-20 hidden dark:block" alt="Flowbite Logo" />
-              AutoSphere
-            </Link>
-            <h1 className="text-xl font-medium leading-tight tracking-tight text-gray-700 py-4 dark:text-white text-center">
-              Create an account
-            </h1>
-            <form
-              className="space-y-4 md:space-y-6"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="firstName"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="First Name"
-                    {...register("firstName")}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="lastName"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Last Name"
-                    {...register("lastName")}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Your email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="name@company.com"
-                    {...register("email")}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="phoneNumber"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Phone Number
-                  </label>
-                  <input
-                    type="text"
-                    id="phoneNumber"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="017xx-xxxxxx"
-                    {...register("phoneNumber")}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    {...register("password")}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="confirmPassword"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Confirm Password
-                  </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    {...register("confirmPassword")}
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="mt-2">
-                  {
-                    preview?.length > 0 ?
-                      <ImagePreview setImage={setImage} preview={preview} setPreview={setPreview} /> :
-                      <ReUsableImageUploder setImage={setImage} setPreview={setPreview} label="Upload Profile Picture" />
-                  }
+    <section className="login-page registration-page" aria-labelledby="registration-title">
+      <div className="login-page__container">
+        <div className="login-page__layout">
+          <aside className="login-story" aria-labelledby="registration-story-title">
+            <img className="login-story__image" src="/images/hero/drive-your-dream.jpg" alt="" />
+            <div className="login-story__shade" aria-hidden="true" />
+            <div className="login-story__copy">
+              <p className="login-story__eyebrow">Welcome to AutoSphere</p>
+              <h2 id="registration-story-title">A new journey.<br /><span>Made for you.</span></h2>
+              <p className="login-story__description">Your first car or your next upgrade. Take the next step toward a drive that fits your life.</p>
+            </div>
+            <div className="login-story__footer">
+              <CarFront aria-hidden="true" />
+              <p>Your next chapter starts with AutoSphere.</p>
+            </div>
+          </aside>
 
-                </div>
+          <div className="login-panel">
+            <div className="login-panel__content">
+              <div className="login-panel__heading">
+                <p className="login-panel__eyebrow">Join AutoSphere</p>
+                <h1 id="registration-title">Create an account</h1>
+                <p>Create your profile and take the first step toward your next car.</p>
               </div>
-              {(isLoading || loading) ? (
-                <Button disabled={(isLoading || loading)} className="w-full">
-                  <TbFidgetSpinner className="mx-auto animate-spin cursor-no-drop" size={24} />
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  className="w-full"
-                >
-                  Create an account
-                </Button>
-              )}
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
-                Already have an account?{" "}
-                <Link
-                  to="/login"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Login here
-                </Link>
-              </p>
-            </form>
+
+              <form className="login-form registration-form" onSubmit={handleSubmit(onSubmit)} aria-busy={isLoading || loading}>
+                <div className="registration-form__fields">
+                  <div className="login-form__field">
+                    <label htmlFor="firstName">First Name</label>
+                    <div className="login-form__input-wrap">
+                      <UserRound aria-hidden="true" />
+                      <input type="text" id="firstName" className="login-form__input" placeholder="First Name" {...register("firstName")} />
+                    </div>
+                  </div>
+                  <div className="login-form__field">
+                    <label htmlFor="lastName">Last Name</label>
+                    <div className="login-form__input-wrap">
+                      <UserRound aria-hidden="true" />
+                      <input type="text" id="lastName" className="login-form__input" placeholder="Last Name" {...register("lastName")} />
+                    </div>
+                  </div>
+                  <div className="login-form__field">
+                    <label htmlFor="email">Your email</label>
+                    <div className="login-form__input-wrap">
+                      <Mail aria-hidden="true" />
+                      <input type="email" id="email" className="login-form__input" placeholder="name@company.com" {...register("email")} />
+                    </div>
+                  </div>
+                  <div className="login-form__field">
+                    <label htmlFor="phoneNumber">Phone Number</label>
+                    <div className="login-form__input-wrap">
+                      <Phone aria-hidden="true" />
+                      <input type="text" id="phoneNumber" className="login-form__input" placeholder="017xx-xxxxxx" {...register("phoneNumber")} />
+                    </div>
+                  </div>
+                  <div className="login-form__field">
+                    <label htmlFor="password">Password</label>
+                    <div className="login-form__input-wrap">
+                      <LockKeyhole aria-hidden="true" />
+                      <input type={showPassword ? "text" : "password"} id="password" placeholder="••••••••" className="login-form__input login-form__input--password" {...register("password")} />
+                      <button type="button" className="login-form__password-toggle" aria-label={showPassword ? "Hide password" : "Show password"} aria-controls="password" onClick={() => setShowPassword((visible) => !visible)}>
+                        {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="login-form__field">
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <div className="login-form__input-wrap">
+                      <LockKeyhole aria-hidden="true" />
+                      <input type={showConfirmPassword ? "text" : "password"} id="confirmPassword" placeholder="••••••••" className="login-form__input login-form__input--password" {...register("confirmPassword")} />
+                      <button type="button" className="login-form__password-toggle" aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"} aria-controls="confirmPassword" onClick={() => setShowConfirmPassword((visible) => !visible)}>
+                        {showConfirmPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`registration-upload ${preview?.length > 0 ? "registration-upload--preview" : ""}`}>
+                  <div className="registration-upload__control">
+                    {preview?.length > 0 ? (
+                      <ImagePreview setImage={setImage} preview={preview} setPreview={setPreview} />
+                    ) : (
+                      <>
+                        <ReUsableImageUploder setImage={setImage} setPreview={setPreview} label="Upload Profile Picture" />
+                        <ImagePlus className="registration-upload__icon" aria-hidden="true" />
+                      </>
+                    )}
+                  </div>
+                  {preview?.length > 0 && (
+                    <div className="registration-upload__copy">
+                      <p>Profile picture</p>
+                      <span>Remove the photo to choose another one.</span>
+                    </div>
+                  )}
+                </div>
+
+                {(isLoading || loading) ? (
+                  <Button disabled={(isLoading || loading)} className="login-form__submit" aria-label="Creating your account">
+                    <TbFidgetSpinner className="animate-spin cursor-no-drop" size={24} />
+                    <span>Creating your account…</span>
+                  </Button>
+                ) : (
+                  <Button type="submit" className="login-form__submit">
+                    Create an account <ArrowRight aria-hidden="true" />
+                  </Button>
+                )}
+                <p className="login-form__signup">
+                  Already have an account? <Link to="/login">Login here</Link>
+                </p>
+              </form>
+            </div>
           </div>
         </div>
       </div>
